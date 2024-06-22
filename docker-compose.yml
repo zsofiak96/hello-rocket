@@ -1,0 +1,21 @@
+version: "3"
+services:
+  flyway:
+    image: flyway/flyway
+    command: -configFiles=/flyway/conf/flyway.config -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    volumes:
+      - ./sql:/flyway/sql
+      - ./flyway.conf:/flyway/conf/flyway.config
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=foo
+      - POSTGRES_PASSWORD=bar
+      - POSTGRES_DB=rocket
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres:
