@@ -1,0 +1,12 @@
+[package]
+name = "hello-rocket"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rocket = { version = "0.5.1", features = ["json"] }
+serde = "1.0.203"
+tokio = "1.38.0"
+tokio-postgres =  { version = "0.7.10", features = ["with-chrono-0_4"] }
+chrono = "0.4.38"
+bytes = "1.6.0"
