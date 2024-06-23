@@ -22,7 +22,6 @@ impl<'r> FromParam<'r> for LaunchDate {
     type Error = &'r str;
 
     fn from_param(param: &'r str) -> Result<Self, Self::Error> {
-        eprintln!("Asd");
         NaiveDate::parse_from_str(param, "%Y-%m-%d").map(LaunchDate).map_err(|_| param)
     }
 }
@@ -55,10 +54,8 @@ async fn fetch_rockets(launch_date: LaunchDate) ->  Result<Vec<RocketResponse>, 
         let rocket = RocketResponse  {
             name: row.get(0),
         };
-        eprintln!("{:?}", &rocket);
         rockets.push(rocket);
     }
-
     Ok(rockets)
 }
 
@@ -76,7 +73,6 @@ async fn get_rockets(launch_date: LaunchDate) -> Result<Json<Vec<RocketResponse>
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        // .mount("/", routes![get_overview])
         .mount("/launch", routes![get_rockets])
 }
 
