@@ -86,14 +86,14 @@ mod test {
     async fn rockets() {
         let rocket = rocket::build().mount("/launch", routes![test_get_rockets]);
         let client = Client::tracked(rocket).await.unwrap();
-        let req = client.get("/launch/2023-06-29");
+        let request = client.get("/launch/2023-06-29");
 
-        let (r1, r2) = rocket::tokio::join!(req.clone().dispatch(), req.dispatch());
-        assert_eq!(r1.status(), r2.status());
-        assert_eq!(r1.status(), Status::Ok);
+        let (request1, request2) = tokio::join!(request.clone().dispatch(), request.dispatch());
+        assert_eq!(request1.status(), request2.status());
+        assert_eq!(request1.status(), Status::Ok);
 
-        let (s1, s2) = (r1.into_string().await, r2.into_string().await);
-        assert_eq!(s1, s2);
-        assert_eq!(s1.unwrap(), "[{\"name\":\"Falcon 9\"},{\"name\":\"H-3\"}]");
+        let (response1, response2) = (request1.into_string().await, request2.into_string().await);
+        assert_eq!(response1, response2);
+        assert_eq!(response1.unwrap(), "[{\"name\":\"Falcon 9\"},{\"name\":\"H-3\"}]");
     }
 }
