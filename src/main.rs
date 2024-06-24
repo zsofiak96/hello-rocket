@@ -1,6 +1,10 @@
 #[macro_use] extern crate rocket;
 
+extern crate dotenv;
+
+use dotenv::dotenv;
 use std::fmt::Debug;
+use std::env;
 use rocket::request::FromParam;
 use rocket::http::Status;
 use rocket::serde::json::Json;
@@ -39,8 +43,12 @@ impl ToSql for LaunchDate {
 }
 
 async fn fetch_rockets(launch_date: LaunchDate) ->  Result<Vec<RocketResponse>, Error> {
+    dotenv().ok();
     let (client, connection) =
-        tokio_postgres::connect("host=localhost dbname=rocket user=foo password=bar", NoTls).await?;
+        tokio_postgres::connect(
+            &env::var("POSTGRES_URL").unwrap(),
+            NoTls,
+        ).await?;
     tokio::spawn(async move {
         if let Err(e) = connection.await {
             eprintln!("Connection error: {}", e);
