@@ -8,6 +8,12 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  POSTGRES_USER: "foo"
+  POSTGRES_PASSWORD: "bar"
+  POSTGRES_DB: "rocket"
+  POSTGRES_HOST: "127.0.0.1"
+  POSTGRES_PORT: "5432"
+  POSTGRES_URL: "postgresql://foo:bar@localhost/rocket"
 
 jobs:
   build:
